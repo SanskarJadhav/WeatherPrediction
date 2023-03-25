@@ -104,7 +104,7 @@ def add_bg_from_url():
 st.set_page_config(layout='wide', page_title="Weather Oracle")
 add_bg_from_url()
 tk = 0
-st.title("Predict Crucial Weather Parameters at an Airport :sun:")
+st.title("Predict Crucial Weather Parameters at an Airport :sunny:")
 location = st.selectbox('Airport: ', dfairport['Display Name'], index = 0)
 if st.button('Submit'):
     tk = 1
