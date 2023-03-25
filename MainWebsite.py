@@ -92,7 +92,7 @@ def add_bg_from_url():
          f"""
          <style>
          .stApp {{
-             background-image: url("/content/weather_wallpaper.jpg");
+             background-image: url("weather_wallpaper.jpg");
              background-attachment: fixed;
              background-size: cover
          }}
@@ -105,12 +105,9 @@ st.set_page_config(layout='wide', page_title="Weather Oracle")
 add_bg_from_url()
 tk = 0
 st.title("Predict Crucial Weather Parameters at an Airport :sun:")
-col1, col2 = st.columns(2)
-with col1:
-    location = st.selectbox('Airport: ', dfairport['Display Name'], index = 0)
-with col2:
-    if st.button('Submit'):
-        tk = 1
+location = st.selectbox('Airport: ', dfairport['Display Name'], index = 0)
+if st.button('Submit'):
+    tk = 1
 if tk == 1:
     station = dfairport[dfairport['Display Name'] == location]['station']
     dfweather = dataretrieval(station)
