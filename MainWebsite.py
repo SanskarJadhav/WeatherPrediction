@@ -31,7 +31,7 @@ def LSTMimplementation(df):
   df['datetime'] = pd.to_datetime(df['datetime'], format='%Y-%m-%dT%H:%M:%S')
   df['day'] = df['datetime'].apply(lambda x: x.day)
   df['hour'] = df['datetime'].apply(lambda x: x.hour)
-  features = ['temp', 'humidity', 'windgust', 'winddir', 'cloudcover']
+  features = ['temp', 'humidity', 'windgust', 'winddir']
   imp_array = []
   for i in features:
     arr = []
