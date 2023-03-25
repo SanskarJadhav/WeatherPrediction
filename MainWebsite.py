@@ -32,7 +32,6 @@ def LSTMimplementation(df):
   df['day'] = df['datetime'].apply(lambda x: x.day)
   df['hour'] = df['datetime'].apply(lambda x: x.hour)
   features = ['windgust', 'winddir', 'cloudcover']
-  preddf = df[-24:,:]
   imp_array = []
   for i in features:
     arr = []
@@ -44,7 +43,7 @@ def LSTMimplementation(df):
     # apart from today, all other days can be used to train model
     train_size = len(dataset) - 24
     train = dataset[:train_size,:]
-    test = preddf
+    test = dataset[-24:,:]
     # using past 5 records to predict weather in next hour
     X_train, Y_train = createdata(train, 5)
     X_test, Y_test = createdata(test, 5)
