@@ -92,7 +92,7 @@ def add_bg_from_url():
          f"""
          <style>
          .stApp {{
-             background-image: url("weather_wallpaper.jpg");
+             background-image: url("https://cdn.pixabay.com/photo/2018/08/23/07/35/thunderstorm-3625405_1280.jpg");
              background-size: cover
          }}
          </style>
