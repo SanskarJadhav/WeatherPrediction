@@ -14,7 +14,7 @@ dfairport = pd.read_csv("indianairports.csv")
 # Using VisualCrossing Weather API (1000 free records per day)
 def dataretrieval(station):
   lastdate = str(date.today())
-  firstdate = str(date.today() - timedelta(days=5))
+  firstdate = str(date.today() - timedelta(days=4))
   url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{0}/{1}/{2}?unitGroup=metric&include=hours&key=9JHWDJKQMNEK2NZP38WFKRWRA&contentType=csv".format(station, firstdate, lastdate)
   df = pd.read_csv(url)
   return df
@@ -31,7 +31,7 @@ def LSTMimplementation(df):
   df['datetime'] = pd.to_datetime(df['datetime'], format='%Y-%m-%dT%H:%M:%S')
   df['day'] = df['datetime'].apply(lambda x: x.day)
   df['hour'] = df['datetime'].apply(lambda x: x.hour)
-  features = ['windgust', 'winddir', 'cloudcover']
+  features = ['temp', 'humidity', 'windgust', 'winddir', 'cloudcover']
   imp_array = []
   for i in features:
     arr = []
