@@ -12,10 +12,11 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error
 dfairport = pd.read_csv("indianairports.csv")
 
 # Using VisualCrossing Weather API (1000 free records per day)
-def dataretrieval(station):
+def dataretrieval(place):
   lastdate = str(date.today())
   firstdate = str(date.today() - timedelta(days=4))
-  url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{0}/{1}/{2}?unitGroup=metric&include=hours&key=9JHWDJKQMNEK2NZP38WFKRWRA&contentType=csv".format(station, firstdate, lastdate)
+  url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{0}/{1}/{2}?unitGroup=metric&include=hours&key=9JHWDJKQMNEK2NZP38WFKRWRA&contentType=csv".format(place, firstdate, lastdate)
+  url = url.replace(" ", "%20")
   df = pd.read_csv(url)
   return df
 
@@ -109,8 +110,8 @@ location = st.selectbox('Airport: ', dfairport['Display Name'], index = 0)
 if st.button('Submit'):
     tk = 1
 if tk == 1:
-    station = dfairport[dfairport['Display Name'] == location]['station'].values[0]
-    dfweather = dataretrieval(station)
+    place = dfairport[dfairport['Display Name'] == location]['municipality'].values[0]
+    dfweather = dataretrieval(place)
     x = LSTMimplementation(dfweather)
     for i in x:
         for j in i[:-2]:
