@@ -52,7 +52,7 @@ def LSTMimplementation(df):
     X_test = np.reshape(X_test, (X_test.shape[0], 1, X_test.shape[1]))
     model = Sequential()
     model.add(LSTM(64, input_shape=(X_train.shape[1], X_train.shape[2]), return_sequences=True))
-    model.add(LSTM(32, return_sequences=True)
+    model.add(LSTM(32, return_sequences=True))
     model.add(LSTM(16))
     model.add(Dropout(0.3))
     model.add(Dense(1))
