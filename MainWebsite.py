@@ -55,7 +55,7 @@ def LSTMimplementation(df):
     model.add(Dropout(0.3))
     model.add(Dense(1))
     model.compile(loss='mean_squared_error', optimizer='adam')
-    history = model.fit(X_train, Y_train, epochs=10, batch_size=32, validation_data=(X_test, Y_test), 
+    history = model.fit(X_train, Y_train, epochs=15, batch_size=8, validation_data=(X_test, Y_test), 
                         callbacks=[EarlyStopping(monitor='val_loss', patience=5)], verbose=1, shuffle=False)
     train_predict = model.predict(X_train)
     test_predict = model.predict(X_test)
