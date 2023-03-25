@@ -13,8 +13,8 @@ dfairport = pd.read_csv("indianairports.csv")
 
 # Using VisualCrossing Weather API (1000 free records per day)
 def dataretrieval(station):
-  lastdate = date.today()
-  firstdate = date.today() - timedelta(days=3)
+  lastdate = str(date.today())
+  firstdate = str(date.today() - timedelta(days=3))
   url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{}/{}/{}?unitGroup=metric&include=hours&key=9JHWDJKQMNEK2NZP38WFKRWRA&contentType=csv".format(station, firstdate, lastdate)
   df = pd.read_csv(url)
   return df
