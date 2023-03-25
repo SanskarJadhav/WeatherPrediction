@@ -111,7 +111,6 @@ if tk == 1:
     station = dfairport[dfairport['Display Name'] == location]['station'].values[0]
     dfweather = dataretrieval(station)
     x = LSTMimplementation(dfweather)
-    st.markdown('<h1>Prediction:</h1>')
     for i in x:
         for j in i[:-2]:
             st.write(j)
