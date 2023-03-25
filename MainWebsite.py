@@ -110,7 +110,7 @@ location = st.selectbox('Airport: ', dfairport['Display Name'], index = 0)
 if st.button('Submit'):
     tk = 1
 if tk == 1:
-    station = dfairport[dfairport['Display Name'] == location]['station']
+    station = dfairport[dfairport['Display Name'] == location]['station'][0]
     dfweather = dataretrieval(station)
     x = LSTMimplementation(dfweather)
     st.markdown('<h1>Prediction:</h1>')
