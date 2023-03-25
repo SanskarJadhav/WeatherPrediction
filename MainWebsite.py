@@ -16,7 +16,6 @@ def dataretrieval(station):
   lastdate = str(date.today())
   firstdate = str(date.today() - timedelta(days=3))
   url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{0}/{1}/{2}?unitGroup=metric&include=hours&key=9JHWDJKQMNEK2NZP38WFKRWRA&contentType=csv".format(station, firstdate, lastdate)
-  url = url.replace(" ", "%20")
   df = pd.read_csv(url)
   return df
 
@@ -110,7 +109,7 @@ location = st.selectbox('Airport: ', dfairport['Display Name'], index = 0)
 if st.button('Submit'):
     tk = 1
 if tk == 1:
-    station = dfairport[dfairport['Display Name'] == location]['station'][0]
+    station = dfairport[dfairport['Display Name'] == location]['station'].values[0]
     dfweather = dataretrieval(station)
     x = LSTMimplementation(dfweather)
     st.markdown('<h1>Prediction:</h1>')
