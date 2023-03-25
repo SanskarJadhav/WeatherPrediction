@@ -16,6 +16,7 @@ def dataretrieval(station):
   lastdate = str(date.today())
   firstdate = str(date.today() - timedelta(days=3))
   url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{0}/{1}/{2}?unitGroup=metric&include=hours&key=9JHWDJKQMNEK2NZP38WFKRWRA&contentType=csv".format(station, firstdate, lastdate)
+  url = url.replace(" ", "%20")
   df = pd.read_csv(url)
   return df
 
