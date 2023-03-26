@@ -15,7 +15,7 @@ nowtime = datetime.now().strftime("%Y-%m-%dT%H:00:00")
 # Using VisualCrossing Weather API (1000 free records per day)
 def dataretrieval(place):
   lastdate = str(date.today())
-  firstdate = str(date.today() - timedelta(days=4))
+  firstdate = str(date.today() - timedelta(days=3))
   url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{0}/{1}/{2}?unitGroup=metric&include=hours&key=9JHWDJKQMNEK2NZP38WFKRWRA&contentType=csv".format(place, firstdate, lastdate)
   url = url.replace(" ", "%20")
   df = pd.read_csv(url)
@@ -83,19 +83,18 @@ def LSTMimplementation(df):
     arr.append(fig)
     aa=[x for x in range(Y_test.shape[1])]
     fig1 = plt.figure(figsize=(8,4))
-    plt.plot(aa, Y_test[0][:], color='b', marker='.', label="actual")
-    plt.plot(aa, test_predict[:,0][:], color='g', label="predicted")
+    plt.plot(aa, Y_test[0][:], color='blue', marker='.', label="actual")
+    plt.plot(aa, test_predict[:,0][:], color='purple', marker='s', label="predicted")
     plt.ylabel(i, size=12)
     plt.xlabel('Hours', size=12)
     plt.legend(fontsize=9)
     arr.append(fig1)
     imp_array.append(arr)
-    dftoday = df.loc[row_num-4:row_num+1,['datetime',i, 'day', 'hour']]
+    dftoday = df.loc[(row_num-4):(row_num+1),['datetime',i, 'day', 'hour']]
     datatoday = dftoday[i].values
     datatoday = np.reshape(datatoday, (-1, 1))
     datatoday = scaler.fit_transform(datatoday)
-    testtoday = np.reshape(datatoday, (datatoday.shape[0], 1, datatoday.shape[1]))
-    predtoday = model.predict(testtoday)
+    predtoday = model.predict(datatoday)
     predtoday = scaler.inverse_transform(predtoday)
     predicttoday.append([i, predtoday])
   return imp_array, predtoday
