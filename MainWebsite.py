@@ -53,11 +53,11 @@ def LSTMimplementation(df):
     X_test = np.reshape(X_test, (X_test.shape[0], 1, X_test.shape[1]))
     model = Sequential()
     model.add(LSTM(256, input_shape=(X_train.shape[1], X_train.shape[2]), return_sequences=True))
-    model.add(LSTM(128))
+    model.add(LSTM(64))
     model.add(Dropout(0.2))
     model.add(Dense(1))
     model.compile(loss='mean_squared_error', optimizer='adam')
-    history = model.fit(X_train, Y_train, epochs=15, batch_size=8, validation_data=(X_test, Y_test), 
+    history = model.fit(X_train, Y_train, epochs=15, batch_size=4, validation_data=(X_test, Y_test), 
                         callbacks=[EarlyStopping(monitor='val_loss', patience=5)], verbose=1, shuffle=False)
     train_predict = model.predict(X_train)
     test_predict = model.predict(X_test)
@@ -79,8 +79,8 @@ def LSTMimplementation(df):
     arr.append(fig)
     aa=[x for x in range(Y_test.shape[1])]
     fig1 = plt.figure(figsize=(8,4))
-    plt.plot(aa, Y_test[0][:], color='b', marker='.', label="actual")
-    plt.plot(aa, test_predict[:,0][:], color='purple', marker='D', label="predicted")
+    plt.plot(aa, Y_test[0][:], color='b', marker='.', label="API model")
+    plt.plot(aa, test_predict[:,0][:], color='purple', marker='D', label="my LSTM model")
     plt.ylabel(i, size=12)
     plt.xlabel('Hours', size=12)
     plt.legend(fontsize=9)
