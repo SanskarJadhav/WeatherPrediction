@@ -97,7 +97,7 @@ def LSTMimplementation(df):
     predtoday = model.predict(datatoday)
     predtoday = scaler.inverse_transform(predtoday)
     predicttoday.append([i, predtoday])
-  return imp_array, predtoday
+  return imp_array, predicttoday
 
 
 
