@@ -3,13 +3,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 import streamlit as st
 from sklearn.preprocessing import MinMaxScaler
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from keras.models import Sequential
 from keras.layers import Dense, LSTM, Dropout
 from keras.callbacks import EarlyStopping
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 
 dfairport = pd.read_csv("indianairports.csv")
+nowtime = datetime.now().strftime("%Y-%m-%dT%H:00:00")
 
 # Using VisualCrossing Weather API (1000 free records per day)
 def dataretrieval(place):
@@ -32,16 +33,18 @@ def LSTMimplementation(df):
   df['datetime'] = pd.to_datetime(df['datetime'], format='%Y-%m-%dT%H:%M:%S')
   df['day'] = df['datetime'].apply(lambda x: x.day)
   df['hour'] = df['datetime'].apply(lambda x: x.hour)
+  row_num = df[df['datetime'] == nowtime].index
   features = ['temp', 'humidity', 'windgust', 'winddir']
   imp_array = []
+  predicttoday = []
   for i in features:
     arr = []
-    df_update = df.loc[:,['datetime',i, 'day', 'hour']]
+    df_update = df.loc[:-24,['datetime',i, 'day', 'hour']]
     dataset = df_update[i].values
     dataset = np.reshape(dataset, (-1, 1))
     scaler = MinMaxScaler(feature_range=(0, 1))
     dataset = scaler.fit_transform(dataset)
-    # apart from today, all other days can be used to train model
+    # apart from yesterday, all other days can be used to train model
     train_size = len(dataset) - 29
     train = dataset[:train_size,:]
     test = dataset[-29:,:]
@@ -53,7 +56,7 @@ def LSTMimplementation(df):
     X_test = np.reshape(X_test, (X_test.shape[0], 1, X_test.shape[1]))
     model = Sequential()
     model.add(LSTM(256, input_shape=(X_train.shape[1], X_train.shape[2]), return_sequences=True))
-    model.add(LSTM(128))
+    model.add(LSTM(128, return_sequences=True))
     model.add(LSTM(64))
     model.add(Dropout(0.2))
     model.add(Dense(1))
@@ -87,7 +90,17 @@ def LSTMimplementation(df):
     plt.legend(fontsize=9)
     arr.append(fig1)
     imp_array.append(arr)
-  return imp_array
+    dftoday = df.loc[row_num-4:row_num+1,['datetime',i, 'day', 'hour']]
+    datatoday = dftoday[i].values
+    datatoday = np.reshape(datatoday, (-1, 1))
+    datatoday = scaler.fit_transform(datatoday)
+    testtoday = np.reshape(datatoday, (datatoday.shape[0], 1, datatoday.shape[1]))
+    predtoday = model.predict(testtoday)
+    predtoday = scaler.inverse_transform(predtoday)
+    predicttoday.append([i, predtoday])
+  return imp_array, predtoday
+
+
 
 def add_bg_from_url():
     st.markdown(
@@ -113,7 +126,11 @@ if st.button('Submit'):
 if tk == 1:
     place = dfairport[dfairport['Display Name'] == location]['municipality'].values[0]
     dfweather = dataretrieval(place)
-    x = LSTMimplementation(dfweather)
+    x, y = LSTMimplementation(dfweather)
+    st.header("Prediction for next hour today ({})".format(str(nowtime + timedelta(hours=1))))
+    for e in y:
+      st.write("{0}: {1}".format(e[0], e[1]))
+    st.header("Prediction vs. Actual Comparison for Yesterday)
     for i in x:
         for j in i[:-2]:
             st.write(j)
