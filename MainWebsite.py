@@ -130,7 +130,7 @@ if tk == 1:
     st.header("Prediction for next hour today ({})".format(str(nowtime + timedelta(hours=1))))
     for e in y:
       st.write("{0}: {1}".format(e[0], e[1]))
-    st.header("Prediction vs. Actual Comparison for Yesterday)
+    st.header("Prediction vs. Actual Comparison for Yesterday")
     for i in x:
         for j in i[:-2]:
             st.write(j)
