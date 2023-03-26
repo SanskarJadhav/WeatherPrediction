@@ -33,7 +33,7 @@ def LSTMimplementation(df):
   df['datetime'] = pd.to_datetime(df['datetime'], format='%Y-%m-%dT%H:%M:%S')
   df['day'] = df['datetime'].apply(lambda x: x.day)
   df['hour'] = df['datetime'].apply(lambda x: x.hour)
-  row_num = df[df['datetime'] == nowtime].index
+  row_num = df[df['datetime'] == str(nowtime)].index
   features = ['temp', 'humidity', 'windgust', 'winddir']
   imp_array = []
   predicttoday = []
