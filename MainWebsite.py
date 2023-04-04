@@ -14,7 +14,7 @@ dfairport = pd.read_csv("indianairports.csv")
 # Using VisualCrossing Weather API (1000 free records per day)
 def dataretrieval(place):
   lastdate = str(date.today())
-  firstdate = str(date.today() - timedelta(days=3))
+  firstdate = str(date.today() - timedelta(days=4))
   url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{0}/{1}/{2}?unitGroup=metric&include=hours&key=9JHWDJKQMNEK2NZP38WFKRWRA&contentType=csv".format(place, firstdate, lastdate)
   url = url.replace(" ", "%20")
   df = pd.read_csv(url)
@@ -52,11 +52,12 @@ def LSTMimplementation(df):
     X_train = np.reshape(X_train, (X_train.shape[0], 1, X_train.shape[1]))
     X_test = np.reshape(X_test, (X_test.shape[0], 1, X_test.shape[1]))
     model = Sequential()
-    model.add(LSTM(128, input_shape=(X_train.shape[1], X_train.shape[2])))
+    model.add(LSTM(128, input_shape=(X_train.shape[1], X_train.shape[2]), return_sequences=True))
+    model.add(LSTM(64))
     model.add(Dropout(0.2))
     model.add(Dense(1))
     model.compile(loss='mean_squared_error', optimizer='adam')
-    history = model.fit(X_train, Y_train, epochs=16, batch_size=8, validation_data=(X_test, Y_test), 
+    history = model.fit(X_train, Y_train, epochs=16, batch_size=16, validation_data=(X_test, Y_test), 
                         callbacks=[EarlyStopping(monitor='val_loss', patience=5)], verbose=1, shuffle=False)
     train_predict = model.predict(X_train)
     test_predict = model.predict(X_test)
