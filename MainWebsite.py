@@ -54,7 +54,7 @@ def LSTMimplementation(df):
     model = Sequential()
     model.add(LSTM(128, input_shape=(X_train.shape[1], X_train.shape[2])))
     model.add(Dropout(0.2))
-    model.add(Dense(5, activation='softmax'))
+    model.add(Dense(1))
     model.compile(loss='mean_squared_error', optimizer='adam')
     history = model.fit(X_train, Y_train, epochs=16, batch_size=8, validation_data=(X_test, Y_test), 
                         callbacks=[EarlyStopping(monitor='val_loss', patience=5)], verbose=1, shuffle=False)
