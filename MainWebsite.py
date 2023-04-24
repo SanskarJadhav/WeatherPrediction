@@ -45,9 +45,9 @@ def LSTMimplementation(df):
     train_size = len(dataset) - 29
     train = dataset[:train_size,:]
     test = dataset[-29:,:]
-    # using past 5 records to predict weather in next hour
-    X_train, Y_train = createdata(train, 8)
-    X_test, Y_test = createdata(test, 8)
+    # using past 6 records to predict weather in next hour
+    X_train, Y_train = createdata(train, 6)
+    X_test, Y_test = createdata(test, 6)
     # reshape input to be [samples, time steps, features]
     X_train = np.reshape(X_train, (X_train.shape[0], 1, X_train.shape[1]))
     X_test = np.reshape(X_test, (X_test.shape[0], 1, X_test.shape[1]))
