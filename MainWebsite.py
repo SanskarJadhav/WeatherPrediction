@@ -119,6 +119,7 @@ if tk == 1:
     for i in x:
         st.header("Predictions for {}".format(feat[count]))
         count+=1
+        st.write(i)
         for j in i[:-2]:
             st.write(j)
         st.pyplot(i[-2])
