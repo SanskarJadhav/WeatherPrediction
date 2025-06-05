@@ -7,7 +7,7 @@ from datetime import date, timedelta
 from keras.models import Sequential
 from keras.layers import Dense, LSTM, Dropout
 from keras.callbacks import EarlyStopping
-from sklearn.metrics import mean_squared_error, mean_absolute_error
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 dfairport = pd.read_csv("indianairports.csv")
 
@@ -67,8 +67,10 @@ def LSTMimplementation(df):
     Y_test = scaler.inverse_transform([Y_test])
     arr.append(f'Train MAE for {i}: {mean_absolute_error(Y_train[0], train_predict[:,0])}')
     arr.append(f'Train RMSE for {i}: {np.sqrt(mean_squared_error(Y_train[0], train_predict[:,0]))}')
+    arr.append(f'Train R Squared Score for {i}: {r2_score(Y_train[0], train_predict[:,0])}')
     arr.append(f'Test MAE for {i}: {mean_absolute_error(Y_test[0], test_predict[:,0])}')
     arr.append(f'Test RMSE for {i}: {np.sqrt(mean_squared_error(Y_test[0], test_predict[:,0]))}')
+    arr.append(f'Test R Squared Score for {i}: {r2_score(Y_test[0], test_predict[:,0])}')
     fig = plt.figure(figsize=(8,4))
     plt.plot(history.history['loss'], label='Train Loss')
     plt.plot(history.history['val_loss'], label='Validation Loss')
